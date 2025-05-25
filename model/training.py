@@ -49,8 +49,8 @@ def entrenar_modelo_fecha(df: pd.DataFrame, test_size: float = 0.2, random_state
     print_metrics(y_train, model.predict(X_train), "Train")
     print_metrics(y_test, model.predict(X_test), "Test")
 
-    joblib.dump(model, "model_fecha.pkl")
-    print("\nDate prediction model saved as model_fecha.pkl")
+    joblib.dump(model, "model_fecha_csv.pkl")
+    print("Date prediction model saved as model_fecha.pkl")
 
 
 def generar_tabla_top_productos(df: pd.DataFrame) -> None:
@@ -80,7 +80,7 @@ def generar_tabla_top_productos(df: pd.DataFrame) -> None:
         .rename(columns={"producto": "top_productos"})
     )
 
-    joblib.dump(top_3_final, "top_productos.pkl")
+    joblib.dump(top_3_final, "top_productos_csv.pkl")
     print("Top-3 product table saved as top_productos.pkl")
 
 
@@ -125,3 +125,9 @@ def evaluar_recomendacion_productos(df: pd.DataFrame) -> None:
     hit_rate = merged["hit"].mean()
     print(f"Product Recommender Evaluation:")
     print(f"    Hit@3 (recall): {hit_rate:.2%} ({merged['hit'].sum()} hits / {len(merged)} clients)")
+
+if __name__ == "__main__":
+    df = pd.read_csv("\\Users\\Dell\\OneDrive\\Escritorio\\Python\\supermercado-engagement\\data\\data.csv")
+    entrenar_modelo_fecha(df)
+    generar_tabla_top_productos(df)
+    evaluar_recomendacion_productos(df)

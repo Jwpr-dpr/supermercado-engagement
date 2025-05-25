@@ -18,8 +18,9 @@ def handler(event=None, context=None):
     """
     Función principal de la Lambda. Extrae, transforma y guarda los datos de clientes recurrentes.
     """
+    print("Iniciando ETL")
     try:
-        logger.info("Iniciando proceso ETL...")
+        logger.info("Iniciando proceso ETL en lambda docker...")
 
         # Extraer
         extractor = S3Extractor(bucket_name=BUCKET_NAME, s3_key=INPUT_KEY)
@@ -35,7 +36,7 @@ def handler(event=None, context=None):
         loader.save_parquet(df_recurrentes)
 
         logger.info("Proceso ETL finalizado con éxito.")
-
+        print("Listo!!")
     except Exception as e:
         logger.error(f"Error general en el proceso ETL: {e}")
         raise

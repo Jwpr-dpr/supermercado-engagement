@@ -1,26 +1,29 @@
-# scripts/generate_predictions.py
+# model/generate_predictions.py
 
 import pandas as pd
-from model.predictor import FechaPredictor, ProductoPredictor
-import boto3
+from predictor import FechaPredictor, ProductoPredictor
+import joblib
 
-# Cargar datos procesados desde S3 
-df = pd.read_parquet("data/clientes_recurrentes.parquet")
+def generar_predicciones():
+    # Leer el dataset limpio (ya generado por la Lambda)
+    df = pd.read_parquet("\\Users\\Dell\\OneDrive\\Escritorio\\Python\\supermercado-engagement\\data\\clientes_recurrentes.parquet")
 
-# Generar predicciones
-fecha_model = FechaPredictor()
-producto_model = ProductoPredictor()
+    # Instanciar los modelos ya entrenados
+    fecha_model = FechaPredictor("\\Users\\Dell\\OneDrive\\Escritorio\\Python\\supermercado-engagement\\model_fecha_csv.pkl")
+    producto_model = ProductoPredictor("\\Users\\Dell\\OneDrive\\Escritorio\\Python\\supermercado-engagement\\top_productos_parquet.pkl")
 
-df_fecha = fecha_model.predecir_proxima_fecha(df)
-df_prod = producto_model.predecir_productos(df_fecha["usuario"])
+    # Predecir fechas por cliente
+    df_fechas = fecha_model.predecir_proxima_fecha(df)
 
-resultado = df_fecha.merge(df_prod, on="usuario")
+    # Predecir productos por cliente
+    df_productos = producto_model.predecir_productos(df_fechas["usuario"])
 
-# Guardar local
-resultado.to_parquet("predicciones_clientes.parquet", index=False)
+    # Unir resultados
+    resultado = df_fechas.merge(df_productos, on="usuario")
 
-# (Opcional) subir a S3
+    # Guardar como .parquet
+    resultado.to_parquet("predicciones_clientes_ensemble.parquet", index=False)
+    print("Archivo predicciones_clientes.parquet generado correctamente.")
 
-s3 = boto3.client("s3")
-with open("predicciones_clientes.parquet", "rb") as f:
-    s3.upload_fileobj(f, "assessment-86fc5eb8", "predictions/predicciones_clientes.parquet")
+if __name__ == "__main__":
+    generar_predicciones()

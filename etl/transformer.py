@@ -45,9 +45,16 @@ class PurchaseTransformer:
         # Agrupa por cliente y mes
         df2 = df.copy()
         df2["mes"] = df["fecha_compra"].dt.to_period("M")
+        
+        # Total gastado por compra
+        df2["total_gastado"] = df2["cantidad"] * df2["precio"]
+
+        # Número de productos distintos por usuario
+        n_productos = df2.groupby("usuario")["producto"].transform("nunique")
+        df2["n_productos_distintos"] = n_productos
 
         compras_mensuales = df2.groupby(["usuario", "mes"]).size().reset_index(name="compras_mes")
-
+        
         # Identifica clientes con más de una compra por mes (es decir, recurrentes)
         recurrentes = compras_mensuales[compras_mensuales["compras_mes"] > 1]["usuario"].unique()
 
