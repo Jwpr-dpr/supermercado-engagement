@@ -23,36 +23,35 @@ Un **cliente recurrente** es aquel que:
 
 ## Estructura del proyecto
 
-okuo/
-│
-├── README.md                   # Descripción del proyecto, cómo correrlo, decisiones tomadas
-├── docker/                     # Dockerfile y assets necesarios para la imagen
-│   └── Dockerfile
-├── lambda/                     # Código de la lambda con ETL
-│   ├── app.py
-│   ├── requirements.txt
-│   └── __init__.py
-├── etl/                        # Lógica para extracción, transformación y carga
-│   ├── extractor.py
-│   ├── transformer.py
-│   ├── loader.py
-│   └── __init__.py
-├── model/                      # Modelos de predicción
-│   ├── predictor.py
-│   ├── training.py
-│   └── __init__.py
-├── data/                       # Esquema local para pruebas (simulación de s3)
-│   └── data.csv
-├── notebooks/                  # Exploración y validación de hipótesis
-│   └── exploratory_analysis.ipynb
-├── tests/                      # Pruebas unitarias
-│   ├── test_extractor.py
-│   ├── test_transformer.py
-│   ├── test_predictor.py
-│   └── __init__.py
-├── .gitignore
-├── pyproject.toml             # Ruff, mypy, black, etc.
-└── mypy.ini                   # Configuración estática de tipos
+supermercado-engagement/  
+├── README.md                   
+├── docker/                     
+│----|── Dockerfile  
+├── lambda/                     
+│----├── app.py  
+│----├── requirements.txt  
+│----|── init.py  
+├── etl/                        
+│----├── extractor.py  
+│----├── transformer.py  
+│----├── loader.py  
+│----|── init.py  
+├── model/                      
+│----├── predictor.py  
+│----├── training.py  
+│----|── init.py  
+├── data/                       
+│----|── data.csv  
+├── notebooks/                  
+│----|── exploratory_analysis.ipynb  
+├── tests/                      
+│----├── test_extractor.py  
+│----├── test_transformer.py  
+│----├── test_predictor.py  
+│----|── init.py  
+├── .gitignore  
+├── pyproject.toml               
+└── mypy.ini                   
 
 ## Tecnologías usadas
 

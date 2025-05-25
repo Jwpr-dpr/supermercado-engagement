@@ -2,13 +2,13 @@
 
 FROM public.ecr.aws/lambda/python:3.11
 
-# Copiar archivos del proyecto
+# Copiamos módulos y dependencias
 COPY etl/ /var/task/etl/
 COPY lambda/app.py /var/task/app.py
+COPY requirements.txt /var/task/
 
-# Instalar dependencias
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# Instalamos las dependencias
+RUN pip install -r /var/task/requirements.txt
 
-# Lambda handler
+# Indicamos el entrypoint
 CMD ["app.handler"]

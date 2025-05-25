@@ -1,7 +1,7 @@
 # pyproject.toml
 
 [project]
-name = "okuo"
+name = "supermercado-engagement"
 version = "0.1.0"
 description = "ETL para clientes recurrentes - Okuo assessment"
 requires-python = ">=3.11"

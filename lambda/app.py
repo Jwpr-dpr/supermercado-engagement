@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 # Parámetros S3
 BUCKET_NAME = "assessment-86fc5eb8"
 INPUT_KEY = "raw-data/data.csv"
-OUTPUT_KEY = "processed-data/clientes_recurrentes.parquet"  # <- AJUSTA si te dieron otro path de escritura
+OUTPUT_KEY = "/cleaned-data/JWP966/*"  
 
 def handler(event=None, context=None):
     """

@@ -33,10 +33,11 @@ class S3Loader:
         try:
             logger.info(f"Guardando archivo parquet en s3://{self.bucket_name}/{self.s3_output_path}")
             buffer = io.BytesIO()
-            df.to_parquet(buffer, index=False, compression=compression)
+            df.to_parquet(buffer, index=False, compression=compression, engine="pyarrow")
             buffer.seek(0)
             self.s3.upload_fileobj(buffer, self.bucket_name, self.s3_output_path)
             logger.info("Archivo guardado exitosamente.")
         except Exception as e:
             logger.error(f"Error al guardar archivo en S3: {e}")
             raise
+
