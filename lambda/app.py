@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 # Parámetros S3
 BUCKET_NAME = "assessment-86fc5eb8"
 INPUT_KEY = "raw-data/data.csv"
-OUTPUT_KEY = "/cleaned-data/JWP966/*"  
+OUTPUT_KEY = "cleaned-data/JWP966/clientes_recurrentes.parquet"  
 
 def handler(event=None, context=None):
     """

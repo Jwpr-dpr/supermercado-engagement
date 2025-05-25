@@ -1,22 +1,26 @@
 # tests/test_loader.py
 
-from etl.extractor import S3Extractor
-from etl.transformer import PurchaseTransformer
+import pandas as pd
+from unittest.mock import patch
 from etl.loader import S3Loader
 
-BUCKET_IN = "assessment-86fc5eb8"
-KEY = "raw-data/data.csv"
 
-# REEMPLAZAR con tu ruta de escritura real
-BUCKET_OUT = "assessment-86fc5eb8"
-OUTPUT_PATH = "processed-data/clientes_recurrentes.parquet"
+@patch("etl.loader.boto3.client")
+def test_save_parquet(mock_boto_client):
+    """
+    Testea que save_parquet llama correctamente a S3 sin realizar la operación real.
+    """
+    mock_s3 = mock_boto_client.return_value
+    mock_s3.upload_fileobj.return_value = None  # Simula éxito
 
-extractor = S3Extractor(bucket_name=BUCKET_IN, s3_key=KEY)
-df = extractor.extract_csv()
+    df = pd.DataFrame({
+        "usuario": [1, 2],
+        "fecha_compra": pd.to_datetime(["2024-01-01", "2024-01-10"]),
+        "cantidad_productos": [11, 12]
+    })
 
-transformer = PurchaseTransformer(df)
-df_clean = transformer.clean_columns()
-df_recurrentes = transformer.get_recurrent_customers()
+    loader = S3Loader(bucket_name="fake-bucket", s3_output_path="fake-path/output.parquet")
+    loader.save_parquet(df)
 
-loader = S3Loader(bucket_name=BUCKET_OUT, s3_output_path=OUTPUT_PATH)
-loader.save_parquet(df_recurrentes)
+    # Asegura que upload_fileobj fue llamado una vez
+    assert mock_s3.upload_fileobj.called

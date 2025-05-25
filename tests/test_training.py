@@ -7,7 +7,7 @@ from model import training
 
 def test_entrenar_modelo_fecha(tmp_path):
     df = pd.DataFrame({
-        "cliente_id": [1, 1, 1, 2, 2],
+        "usuario": [1, 1, 1, 2, 2],
         "fecha_compra": pd.to_datetime([
             "2024-01-01", "2024-01-10", "2024-01-20", 
             "2024-01-03", "2024-01-30"
@@ -20,7 +20,7 @@ def test_entrenar_modelo_fecha(tmp_path):
 
 def test_generar_top_productos(tmp_path):
     df = pd.DataFrame({
-        "cliente_id": [1, 1, 1, 2, 2, 2, 2],
+        "usuario": [1, 1, 1, 2, 2, 2, 2],
         "producto": ["pan", "leche", "pan", "huevos", "pan", "arroz", "pan"]
     })
 
@@ -30,7 +30,7 @@ def test_generar_top_productos(tmp_path):
 
 def test_evaluar_recomendacion_productos(capsys):
     df = pd.DataFrame({
-        "cliente_id": [1, 1, 1, 1],
+        "usuario": [1, 1, 1, 1],
         "fecha_compra": pd.to_datetime([
             "2024-01-01", "2024-01-05", "2024-01-10", "2024-01-15"
         ]),
